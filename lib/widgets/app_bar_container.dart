@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:tb_share_notes/constants/style_constants.dart';
+
+class AppBarContainer extends StatelessWidget {
+  const AppBarContainer({
+    required this.height,
+    required this.width,
+    required this.image
+  });
+  final double height;
+  final double width;
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height * .4,
+      width: width,
+      decoration: appBarBoxDecoration(image),
+    );
+  }
+}
