@@ -6,12 +6,24 @@ import 'package:tb_share_notes/screens/home/home_screen.dart';
 import 'package:tb_share_notes/screens/signup/signup_screen.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool hidePassword = true;
+  String? _username;
+  String? _password;
+  @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
     Size size = MediaQuery.of(context).size;
+    var smallGap = const SizedBox(height: 20);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -59,34 +71,9 @@ class LoginScreen extends StatelessWidget {
                               child: Wrap(
                                 spacing: 1,
                                 children: [
-                                  
-                                  TextFormField(
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: Icon(Icons.email),
-                                      hintText: "Email",
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                        border: const OutlineInputBorder(),
-                                        prefixIcon: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.lock_outlined),
-                                        ),
-                                        hintText: "Pssword",
-                                        suffixIcon: const Icon(
-                                          Icons.visibility,
-                                          color: Colors.indigoAccent,
-                                        )),
-                                  ),
-                                  
+                                  emailTextField(emailController),
+                                  smallGap,
+                                  passwordTextField(passwordController),
                                 ],
                               ),
                             ),
@@ -102,17 +89,24 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10,),
+                          smallGap,
                           SizedBox(
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
-                                 Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen()),
-                                            );
+                                _username = emailController.text;
+                                _password = passwordController.text;
+                                if (_username!.isEmpty || _password!.isEmpty) {
+                                  print("Please Enter Field");
+                                } else {
+                                  print(_username);
+                                  print(_password);
+                                }
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()),
+                                );
                               },
                               child: const Text(
                                 "Login",
@@ -156,6 +150,42 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  TextFormField passwordTextField(TextEditingController passwordController) {
+    return TextFormField(
+      
+      style: contentStyle,
+      controller: passwordController,
+      keyboardType: TextInputType.text,
+      obscureText: hidePassword,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                hidePassword = !hidePassword;
+              });
+            },
+            icon: Icon(
+                hidePassword ? passwordVisibility : passwordVisibilityOff)),
+        hintText: "Pssword",
+        prefixIcon: const Icon(Icons.lock_outlined),
+      ),
+    );
+  }
+
+  TextFormField emailTextField(TextEditingController emailController) {
+    return TextFormField(
+      style: contentStyle,
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.email),
+        hintText: "Email",
       ),
     );
   }

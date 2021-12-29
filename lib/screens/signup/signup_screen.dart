@@ -5,9 +5,16 @@ import 'package:tb_share_notes/constants/style_constants.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 import 'package:tb_share_notes/screens/login/login_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool hidePassword = true;
+  bool hideConfirmPassword= true;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -82,35 +89,46 @@ class SignUpScreen extends StatelessWidget {
                                     ),
                                     TextFormField(
                                       keyboardType: TextInputType.text,
-                                      obscureText: true,
+                                      obscureText: hidePassword,
                                       decoration: InputDecoration(
-                                          border: const OutlineInputBorder(),
-                                          prefixIcon: IconButton(
+                                        border: const OutlineInputBorder(),
+                                        prefixIcon: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.lock_outlined),
+                                        ),
+                                        hintText: "Pssword",
+                                        suffixIcon: IconButton(
                                             onPressed: () {
-                                                  
+                                              setState(() {
+                                                hidePassword = !hidePassword;
+                                              });
                                             },
-                                            icon: const Icon(Icons.lock_outlined),
-                                          ),
-                                          hintText: "Pssword",
-                                          suffixIcon: const Icon(
-                                            Icons.visibility,
-                                            color: Colors.indigoAccent,
-                                          )),
+                                            icon: Icon(hidePassword
+                                                ? passwordVisibilityOff
+                                                : passwordVisibility)),
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     TextFormField(
                                       keyboardType: TextInputType.text,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          prefixIcon: Icon(Icons.lock_outlined),
-                                          hintText: "Confirm Password",
-                                          suffixIcon: Icon(
-                                            Icons.visibility,
-                                            color: Colors.indigoAccent,
-                                          )),
+                                      obscureText: hideConfirmPassword,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        prefixIcon:
+                                            const Icon(Icons.lock_outlined),
+                                        hintText: "Confirm Password",
+                                        suffixIcon: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                hideConfirmPassword = !hideConfirmPassword;
+                                              });
+                                            },
+                                            icon: Icon(hideConfirmPassword
+                                                ? passwordVisibilityOff
+                                                : passwordVisibility)),
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -119,7 +137,6 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            
                             SizedBox(
                               height: 50,
                               child: ElevatedButton(

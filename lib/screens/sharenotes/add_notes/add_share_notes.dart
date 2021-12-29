@@ -17,7 +17,9 @@ class AddNotesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 50,
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -26,7 +28,7 @@ class AddNotesScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal:15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -59,7 +61,7 @@ class AddNotesScreen extends StatelessWidget {
             Card(
               margin: const EdgeInsets.all(20),
               child: SizedBox(
-                height: _size.height * .5,
+                height: _size.height * .2,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: SingleChildScrollView(
@@ -78,6 +80,18 @@ class AddNotesScreen extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: 50,
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: buttonShape,
+                  ),
+                    onPressed: () {}, child: const Text("Add",style: buttonText,)))
           ],
         ),
       ),

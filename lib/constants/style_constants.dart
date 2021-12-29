@@ -7,4 +7,5 @@ appBarBoxDecoration(String image) => BoxDecoration(
       image: DecorationImage(image: AssetImage(image), fit: BoxFit.fill),
     );
 const subHeadStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w400);
-const contentStyle = TextStyle(fontSize: 24);
+const contentStyle = TextStyle(fontSize: 18);
+var buttonShape = MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)));

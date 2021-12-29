@@ -10,19 +10,28 @@ class ViewNotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController=TextEditingController(text: title);
+    final TextEditingController titleController =
+        TextEditingController(text: title);
+    titleController.selection = TextSelection.fromPosition(
+        TextPosition(offset: titleController.text.length));
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: const Text("View Notes"),
         centerTitle: true,
+        actions: [
+          //IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
@@ -31,7 +40,7 @@ class ViewNotesScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal:15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -42,10 +51,10 @@ class ViewNotesScreen extends StatelessWidget {
                     color: Colors.white,
                     child: TextFormField(
                       controller: titleController,
+                      readOnly: false,
                       style: contentStyle,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        
                       ),
                     ),
                   ),
@@ -86,6 +95,10 @@ class ViewNotesScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.edit),
       ),
     );
   }

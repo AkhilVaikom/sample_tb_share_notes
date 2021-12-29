@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
             leading: CircleAvatar(
               child: Text("${index + 1}"),
             ),
-            trailing: const Icon(Icons.forward),
+            trailing: const Icon(Icons.arrow_forward_ios),
           );
         },
         separatorBuilder: (context, index) {
