@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tb_share_notes/constants/route/route.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
 import 'package:tb_share_notes/screens/home/home_screen.dart';
 import 'package:tb_share_notes/screens/signup/signup_screen.dart';
+import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,16 +19,18 @@ class _LoginScreenState extends State<LoginScreen> {
   bool hidePassword = true;
   String? _username;
   String? _password;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
     Size size = MediaQuery.of(context).size;
     var smallGap = const SizedBox(height: 20);
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: SizedBox(
             height: size.height,
             width: size.width,
@@ -84,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {},
                               child: const Text(
                                 "Forget Password?",
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 18),
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 18),
                               ),
                             ),
                           ),
@@ -93,21 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () {
-                                _username = emailController.text;
-                                _password = passwordController.text;
-                                if (_username!.isEmpty || _password!.isEmpty) {
-                                  print("Please Enter Field");
-                                } else {
-                                  print(_username);
-                                  print(_password);
-                                }
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomeScreen()),
-                                );
-                              },
+                              onPressed: () => checkLogin(context),
                               child: const Text(
                                 "Login",
                                 style: buttonText,
@@ -131,12 +121,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontSize: 18),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const SignUpScreen()),
-                                            );
+                                            // Navigator.pushReplacement(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           const SignUpScreen()),
+                                            // );
+                                             Navigator.pushNamed(context, '/signup');
                                           })
                                   ]),
                             ),
@@ -154,9 +145,73 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  
+
+  // Login Button click Function
+  void checkLogin(BuildContext ctx) {
+    _username = emailController.text;
+    _password = passwordController.text;
+
+    if (_formKey.currentState!.validate()) {
+      if(_username=="akhilan@gmail.com" && _password=="Akhil123"){
+        //  Navigator.pushReplacement(
+        // context,
+        // MaterialPageRoute(builder: (context) => const HomeScreen()),
+      //);
+      Navigator.pushReplacementNamed(context, '/home');
+      }
+      else{
+        ScaffoldMessenger.of(ctx).showSnackBar(
+        const SnackBar(
+          content: Text("Login Failed"),
+          behavior: SnackBarBehavior.floating,
+
+        ),
+      );
+      }
+     
+    } else {
+      
+      // MaterialBanner(
+      //   padding: const EdgeInsets.all(20),
+      //   content: const Text('Login Failed'),
+      //   leading: const Icon(Icons.agriculture_outlined),
+      //   backgroundColor: const Color(0xFFE0E0E0),
+      //   actions: <Widget>[
+      //     const CircularProgressIndicator(),
+      //     TextButton(
+      //       onPressed: (){
+      //         Navigator.pop(context);
+      //       },
+      //       child: const Text('Close'),
+      //     ),
+         
+      //   ],
+      // );
+    }
+  }
+
+  // Email Text field
+  TextFormField emailTextField(TextEditingController emailController) {
+    return TextFormField(
+      autocorrect: true,
+      validator: validateEmailAddress,
+      style: contentStyle,
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.email),
+        hintText: "Email",
+      ),
+    );
+  }
+
+  // Password Text Field
+
   TextFormField passwordTextField(TextEditingController passwordController) {
     return TextFormField(
-      
+      validator: validatePassword,
       style: contentStyle,
       controller: passwordController,
       keyboardType: TextInputType.text,
@@ -170,23 +225,11 @@ class _LoginScreenState extends State<LoginScreen> {
               });
             },
             icon: Icon(
-                hidePassword ? passwordVisibility : passwordVisibilityOff)),
+                hidePassword ? passwordVisibilityOff : passwordVisibility)),
         hintText: "Pssword",
         prefixIcon: const Icon(Icons.lock_outlined),
       ),
     );
   }
 
-  TextFormField emailTextField(TextEditingController emailController) {
-    return TextFormField(
-      style: contentStyle,
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.email),
-        hintText: "Email",
-      ),
-    );
-  }
 }

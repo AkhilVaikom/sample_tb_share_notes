@@ -27,12 +27,13 @@ class HomeScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return ListTile(
-            onTap: ()=> Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>  ViewNotesScreen(title: "Title ${index + 1}",),
-            ),
-          ),
+          //   onTap: ()=> Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) =>  ViewNotesScreen(title: "Title ${index + 1}",),
+          //   ),
+          // ),
+          onTap: () => Navigator.pushNamed(context, '/viewNote', arguments: {'title':'${index+1}'}),
             title: Text("Title ${index + 1}"),
             leading: CircleAvatar(
               child: Text("${index + 1}"),
@@ -47,12 +48,13 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddNotesScreen(),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const AddNotesScreen(),
+          //   ),
+          // );
+          Navigator.pushNamed(context, '/addNote');
         },
         child: const Icon(Icons.add),
       ),

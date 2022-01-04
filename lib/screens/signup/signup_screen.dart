@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/screens/home/home_screen.dart';
+import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 import 'package:tb_share_notes/screens/login/login_screen.dart';
 
@@ -13,14 +15,22 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool hidePassword = true;
-  bool hideConfirmPassword= true;
+  bool hideConfirmPassword = true;
+  String? _userName, _password, _eMail, _confirmPassord;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: SizedBox(
               height: size.height,
               width: size.width,
@@ -34,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      padding:  const EdgeInsets.symmetric(horizontal: 20),
                       height: size.height * 0.7,
                       width: size.width,
                       decoration: const BoxDecoration(
@@ -65,71 +75,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: Wrap(
                                   spacing: 1,
                                   children: [
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.person),
-                                        hintText: "Username",
-                                      ),
-                                    ),
+                                    userNameTextField(userNameController),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.email),
-                                        hintText: "Email",
-                                      ),
-                                    ),
+                                    emailTextField(emailController),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      obscureText: hidePassword,
-                                      decoration: InputDecoration(
-                                        border: const OutlineInputBorder(),
-                                        prefixIcon: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.lock_outlined),
-                                        ),
-                                        hintText: "Pssword",
-                                        suffixIcon: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                hidePassword = !hidePassword;
-                                              });
-                                            },
-                                            icon: Icon(hidePassword
-                                                ? passwordVisibilityOff
-                                                : passwordVisibility)),
-                                      ),
-                                    ),
+                                    //passwordField(),
+                                    passwordTextField(
+                                        obscureText.password,
+                                        passwordController,
+                                        hidePassword,
+                                        "Password"),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      obscureText: hideConfirmPassword,
-                                      decoration: InputDecoration(
-                                        border: const OutlineInputBorder(),
-                                        prefixIcon:
-                                            const Icon(Icons.lock_outlined),
-                                        hintText: "Confirm Password",
-                                        suffixIcon: IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                hideConfirmPassword = !hideConfirmPassword;
-                                              });
-                                            },
-                                            icon: Icon(hideConfirmPassword
-                                                ? passwordVisibilityOff
-                                                : passwordVisibility)),
-                                      ),
-                                    ),
+                                    passwordTextField(
+                                        obscureText.confirmPassword,
+                                        confirmPasswordController,
+                                        hideConfirmPassword,
+                                        "Confirm Password"),
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -140,7 +107,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SizedBox(
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  checkSignUp(context);
+                                },
                                 child: const Text(
                                   "Sign Up",
                                   style: buttonText,
@@ -184,5 +153,133 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  TextFormField userNameTextField(TextEditingController controller) {
+    return TextFormField(
+      validator: validateUserName,
+      controller: controller,
+      keyboardType: TextInputType.text,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.person),
+        hintText: "Username",
+      ),
+    );
+  }
+
+  // TextFormField confirmPassword() {
+  //   return TextFormField(
+  //                                     keyboardType: TextInputType.text,
+  //                                     obscureText: hideConfirmPassword,
+  //                                     decoration: InputDecoration(
+  //                                       border: const OutlineInputBorder(),
+  //                                       prefixIcon:
+  //                                           const Icon(Icons.lock_outlined),
+  //                                       hintText: "Confirm Password",
+  //                                       suffixIcon: IconButton(
+  //                                           onPressed: () {
+  //                                             setState(() {
+  //                                               hideConfirmPassword =
+  //                                                   !hideConfirmPassword;
+  //                                             });
+  //                                           },
+  //                                           icon: Icon(hideConfirmPassword
+  //                                               ? passwordVisibilityOff
+  //                                               : passwordVisibility)),
+  //                                     ),
+  //                                   );
+  // }
+
+  // TextFormField passwordField() {
+  //   return TextFormField(
+  //                                     keyboardType: TextInputType.text,
+  //                                     obscureText: hidePassword,
+  //                                     decoration: InputDecoration(
+  //                                       border: const OutlineInputBorder(),
+  //                                       prefixIcon: IconButton(
+  //                                         onPressed: () {},
+  //                                         icon: const Icon(Icons.lock_outlined),
+  //                                       ),
+  //                                       hintText: "Pssword",
+  //                                       suffixIcon: IconButton(
+  //                                           onPressed: () {
+  //                                             setState(() {
+  //                                               hidePassword = !hidePassword;
+  //                                             });
+  //                                           },
+  //                                           icon: Icon(hidePassword
+  //                                               ? passwordVisibilityOff
+  //                                               : passwordVisibility)),
+  //                                     ),
+  //                                   );
+  // }
+
+  //Email Text Field
+  TextFormField emailTextField(TextEditingController emailController) {
+    return TextFormField(
+      autocorrect: true,
+      validator: validateEmailAddress,
+      style: contentStyle,
+      controller: emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.email),
+        hintText: "Email",
+      ),
+    );
+  }
+
+  //Pasword Text Field
+  TextFormField passwordTextField(Enum visibilePasswordText,
+      TextEditingController controller, bool obText, String textName) {
+    return TextFormField(
+      validator: validatePassword,
+      style: contentStyle,
+      controller: controller,
+      keyboardType: TextInputType.text,
+      obscureText: obText,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                obText = !obText;
+                visibilePasswordText == obscureText.password
+                    ? hidePassword = obText
+                    : hideConfirmPassword = obText;
+              });
+            },
+            icon: Icon(obText ? passwordVisibilityOff : passwordVisibility)),
+        hintText: textName,
+        prefixIcon: const Icon(Icons.lock_outlined),
+      ),
+    );
+  }
+
+  // Sign Up onclick Function
+  void checkSignUp(BuildContext ctx) {
+    _userName = userNameController.text;
+    _eMail = emailController.text;
+    _password = passwordController.text;
+    _confirmPassord = confirmPasswordController.text;
+
+    if (_formKey.currentState!.validate()) {
+      if (_password == _confirmPassord) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          const SnackBar(
+            content: Text(
+                "Password & Confirm Password did not match \nPlease try again..."),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
   }
 }

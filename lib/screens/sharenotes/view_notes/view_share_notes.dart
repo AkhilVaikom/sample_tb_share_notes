@@ -10,10 +10,10 @@ class ViewNotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController titleController =
-        TextEditingController(text: title);
-    titleController.selection = TextSelection.fromPosition(
-        TextPosition(offset: titleController.text.length));
+    // final TextEditingController titleController =
+    //     TextEditingController(text: title);
+    // titleController.selection = TextSelection.fromPosition(
+    //     TextPosition(offset: titleController.text.length));
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -32,45 +32,15 @@ class ViewNotesScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Title",
+                title,
                 style: subHeadStyle,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    color: Colors.white,
-                    child: TextFormField(
-                      controller: titleController,
-                      readOnly: false,
-                      style: contentStyle,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                "Descrption",
-                style: subHeadStyle,
-              ),
-            ),
+            
+            
             Card(
               margin: const EdgeInsets.all(20),
               child: SizedBox(
