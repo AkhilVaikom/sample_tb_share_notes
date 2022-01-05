@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 const headStyle = TextStyle(fontSize: 42, fontWeight: FontWeight.bold);

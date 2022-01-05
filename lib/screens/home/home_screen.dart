@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
-import 'package:tb_share_notes/screens/sharenotes/add_notes/add_share_notes.dart';
-import 'package:tb_share_notes/screens/sharenotes/view_notes/view_share_notes.dart';
+import 'package:tb_share_notes/screens/login/login_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+ // SharedPreferences? sharedPreferences;
+@override
+  void initState() {
+   // checkLoginStatus();
+    super.initState();
+  }
+
+   
+  @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      // appBar: AppBar(title: Text(appName),centerTitle: true,),
+      appBar: AppBar(title: Text(appName),centerTitle: true,actions: [IconButton(onPressed: (){
+      logout(context);
+      }, icon: const Icon(Icons.power_settings_new))],),
       // body: CustomScrollView(
       //   slivers: <Widget>[
       //     SliverAppBar(
@@ -60,4 +76,11 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+ logout(BuildContext context)async {
+   final sharedPref= await SharedPreferences.getInstance();
+   await sharedPref.clear();
+ }
+
+ 
 }

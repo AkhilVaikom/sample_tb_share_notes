@@ -1,12 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tb_share_notes/constants/route/route.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
 import 'package:tb_share_notes/screens/home/home_screen.dart';
-import 'package:tb_share_notes/screens/signup/signup_screen.dart';
 import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,9 +18,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool _isLoading = false;
   bool hidePassword = true;
-  String? _username;
-  String? _password;
+  // String? _username;
+  // String? _password;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -88,8 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {},
                               child: const Text(
                                 "Forget Password?",
-                                style: TextStyle(
-                                    color: Colors.grey, fontSize: 18),
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 18),
                               ),
                             ),
                           ),
@@ -97,7 +100,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           SizedBox(
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () => checkLogin(context),
+                              onPressed: () {
+                                setState(() {
+                                  _isLoading = true;
+                                });
+                                if (_formKey.currentState!.validate()) {
+                                  login(context, emailController.text,
+                                      passwordController.text);
+                                }
+                              },
                               child: const Text(
                                 "Login",
                                 style: buttonText,
@@ -127,7 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             //       builder: (context) =>
                                             //           const SignUpScreen()),
                                             // );
-                                             Navigator.pushNamed(context, '/signup');
+                                            Navigator.pushNamed(
+                                                context, '/signup');
                                           })
                                   ]),
                             ),
@@ -145,33 +157,27 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  
-
   // Login Button click Function
-  void checkLogin(BuildContext ctx) {
-    _username = emailController.text;
-    _password = passwordController.text;
+  void checkLogin(BuildContext ctx, String _username, String _password) async {
+    // _username = emailController.text;
+    // _password = passwordController.text;
 
     if (_formKey.currentState!.validate()) {
-      if(_username=="akhilan@gmail.com" && _password=="Akhil123"){
+      if (_username == "akhilan@gmail.com" && _password == "Akhil123") {
         //  Navigator.pushReplacement(
         // context,
         // MaterialPageRoute(builder: (context) => const HomeScreen()),
-      //);
-      Navigator.pushReplacementNamed(context, '/home');
-      }
-      else{
+        //);
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
         ScaffoldMessenger.of(ctx).showSnackBar(
-        const SnackBar(
-          content: Text("Login Failed"),
-          behavior: SnackBarBehavior.floating,
-
-        ),
-      );
+          const SnackBar(
+            content: Text("Login Failed"),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
-     
     } else {
-      
       // MaterialBanner(
       //   padding: const EdgeInsets.all(20),
       //   content: const Text('Login Failed'),
@@ -185,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
       //       },
       //       child: const Text('Close'),
       //     ),
-         
+
       //   ],
       // );
     }
@@ -232,4 +238,33 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // Login button Call
+
+  var loginURL = Uri.parse("https://tb-share-note.herokuapp.com/api/login");
+
+  void login(BuildContext context, String email, String password) async {
+    Map data = {'email': email, 'password': password};
+    final sharedPreferences = await SharedPreferences.getInstance();
+    var jsonData,jsonparse;
+    var response = await http.post(loginURL, body: data);
+    if (response.statusCode == 200) {
+      jsonData = json.decode(response.body.toString());
+      jsonparse=jsonData['data']['token'];
+      print(jsonparse);
+     await sharedPreferences.setString('token', jsonData['data']['token']);
+      print(sharedPreferences);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => const HomeScreen()),
+          (Route<dynamic> route) => false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Login Failed"),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      print(response.body);
+    }
+  }
 }
