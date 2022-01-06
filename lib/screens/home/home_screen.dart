@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/screens/login/login_screen.dart';
+import 'package:tb_share_notes/screens/sharenotes/view_notes/view_share_notes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,10 +13,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
- // SharedPreferences? sharedPreferences;
 @override
   void initState() {
-   // checkLoginStatus();
     super.initState();
   }
 
@@ -26,30 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(title: Text(appName),centerTitle: true,actions: [IconButton(onPressed: (){
       logout(context);
       }, icon: const Icon(Icons.power_settings_new))],),
-      // body: CustomScrollView(
-      //   slivers: <Widget>[
-      //     SliverAppBar(
-      //       title: Text(appName),
-      //       centerTitle: true,
-      //       //expandedHeight: 200,
-      //       //flexibleSpace: FlexibleSpaceBar(background: Image.asset(appBarImage),),
-      //       floating: true,
-      //     ),
-
-      //   ],
-      // ),
+     
 
       body: ListView.separated(
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return ListTile(
-          //   onTap: ()=> Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) =>  ViewNotesScreen(title: "Title ${index + 1}",),
-          //   ),
-          // ),
-          onTap: () => Navigator.pushNamed(context, '/viewNote', arguments: {'title':'${index+1}'}),
+            onTap: ()=> Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>  ViewNotesScreen(title: "Title ${index + 1}",),
+            ),
+          ),
             title: Text("Title ${index + 1}"),
             leading: CircleAvatar(
               child: Text("${index + 1}"),
@@ -64,12 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => const AddNotesScreen(),
-          //   ),
-          // );
           Navigator.pushNamed(context, '/addNote');
         },
         child: const Icon(Icons.add),
@@ -80,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
  logout(BuildContext context)async {
    final sharedPref= await SharedPreferences.getInstance();
    await sharedPref.clear();
+   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>const LoginScreen()), (route) => false);
  }
 
  

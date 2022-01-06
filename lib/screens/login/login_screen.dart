@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
-import 'package:tb_share_notes/screens/home/home_screen.dart';
+import 'package:tb_share_notes/screens/login/utility/functions.dart';
 import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
-import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,8 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool hidePassword = true;
-  // String? _username;
-  // String? _password;
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -132,12 +127,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontSize: 18),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            // Navigator.pushReplacement(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //       builder: (context) =>
-                                            //           const SignUpScreen()),
-                                            // );
                                             Navigator.pushNamed(
                                                 context, '/signup');
                                           })
@@ -153,62 +142,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  // Login Button click Function
-  void checkLogin(BuildContext ctx, String _username, String _password) async {
-    // _username = emailController.text;
-    // _password = passwordController.text;
-
-    if (_formKey.currentState!.validate()) {
-      if (_username == "akhilan@gmail.com" && _password == "Akhil123") {
-        //  Navigator.pushReplacement(
-        // context,
-        // MaterialPageRoute(builder: (context) => const HomeScreen()),
-        //);
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        ScaffoldMessenger.of(ctx).showSnackBar(
-          const SnackBar(
-            content: Text("Login Failed"),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } else {
-      // MaterialBanner(
-      //   padding: const EdgeInsets.all(20),
-      //   content: const Text('Login Failed'),
-      //   leading: const Icon(Icons.agriculture_outlined),
-      //   backgroundColor: const Color(0xFFE0E0E0),
-      //   actions: <Widget>[
-      //     const CircularProgressIndicator(),
-      //     TextButton(
-      //       onPressed: (){
-      //         Navigator.pop(context);
-      //       },
-      //       child: const Text('Close'),
-      //     ),
-
-      //   ],
-      // );
-    }
-  }
-
-  // Email Text field
-  TextFormField emailTextField(TextEditingController emailController) {
-    return TextFormField(
-      autocorrect: true,
-      validator: validateEmailAddress,
-      style: contentStyle,
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.email),
-        hintText: "Email",
       ),
     );
   }
@@ -236,35 +169,5 @@ class _LoginScreenState extends State<LoginScreen> {
         prefixIcon: const Icon(Icons.lock_outlined),
       ),
     );
-  }
-
-  // Login button Call
-
-  var loginURL = Uri.parse("https://tb-share-note.herokuapp.com/api/login");
-
-  void login(BuildContext context, String email, String password) async {
-    Map data = {'email': email, 'password': password};
-    final sharedPreferences = await SharedPreferences.getInstance();
-    var jsonData,jsonparse;
-    var response = await http.post(loginURL, body: data);
-    if (response.statusCode == 200) {
-      jsonData = json.decode(response.body.toString());
-      jsonparse=jsonData['data']['token'];
-      print(jsonparse);
-     await sharedPreferences.setString('token', jsonData['data']['token']);
-      print(sharedPreferences);
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (BuildContext context) => const HomeScreen()),
-          (Route<dynamic> route) => false);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Login Failed"),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      print(response.body);
-    }
   }
 }

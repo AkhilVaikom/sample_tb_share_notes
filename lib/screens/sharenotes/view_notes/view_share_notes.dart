@@ -10,10 +10,6 @@ class ViewNotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final TextEditingController titleController =
-    //     TextEditingController(text: title);
-    // titleController.selection = TextSelection.fromPosition(
-    //     TextPosition(offset: titleController.text.length));
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -21,7 +17,6 @@ class ViewNotesScreen extends StatelessWidget {
         title: const Text("View Notes"),
         centerTitle: true,
         actions: [
-          //IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
           IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
         ],
       ),
