@@ -39,7 +39,7 @@ class AppRouter {
         );
       case addNote:
         return MaterialPageRoute(
-          builder: (_) => const AddNotesScreen(),
+          builder: (_) =>  AddNotesScreen(),
         );
       case viewNote:
       // return MaterialPageRoute(

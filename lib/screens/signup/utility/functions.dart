@@ -17,14 +17,16 @@ void checkSignUp(BuildContext ctx, String _userName, String _eMail,
   if (_password == _confirmPassord) {
     var jsonData;
     var response = await http.post(signupURL, body: data);
-    //_msg=jsonData['message'].toString();
+    
     print(response.statusCode);
     if (response.statusCode == 200) {
-      jsonData = json.decode(response.body.toString());
+      jsonData = json.decode(response.body);
+      _msg=jsonData['message'].toString();
+      print(_msg);
       await sharedPreferences.setString('token', jsonData['data']['token']);
        ScaffoldMessenger.of(ctx).showSnackBar(
          SnackBar(
-          content: Text("Success"),
+          content: Text(_msg),
           behavior: SnackBarBehavior.fixed,
         ),
       );

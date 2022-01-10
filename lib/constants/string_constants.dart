@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 String appBarImage = "assets/images/appbar.png";
+String shareNoteImage = "assets/images/shareNotes.png";
 String splashImage = "assets/images/TechBlaze_logo.png";
 String appName = "Share Notes";
 
