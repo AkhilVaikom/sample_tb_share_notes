@@ -11,7 +11,7 @@ import 'package:tb_share_notes/utility/validator.dart';
 
 
 
-// Login Button 
+// Login Button Function
 void login(BuildContext context, String email, String password) async {
     Map data = {'email': email, 'password': password};
     final sharedPreferences = await SharedPreferences.getInstance();
