@@ -34,7 +34,7 @@ void checkSignUp(BuildContext ctx, String _userName, String _eMail,
       );
       Navigator.of(ctx).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) => const HomeScreen()),
+              builder: (BuildContext context) =>  HomeScreen(user: _userName,)),
           (Route<dynamic> route) => false);
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(

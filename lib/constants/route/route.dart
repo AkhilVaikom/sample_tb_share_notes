@@ -19,11 +19,17 @@ class AppRouter {
 
   const AppRouter._();
 
+  
+
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+   
+    
     switch (settings.name) {
       case home:
+        final args = settings.arguments as Map;
+        String username= args['userName'].toString();
         return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
+          builder: (_) =>  HomeScreen(user: username),
         );
       case login:
         return MaterialPageRoute(

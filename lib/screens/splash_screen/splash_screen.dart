@@ -45,12 +45,14 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> checkUserLoggedIn() async{
+    
     final _sharedPreferences = await SharedPreferences.getInstance();
     final _userLoggedIn= _sharedPreferences.getString('token');
+    final name = _sharedPreferences.getString('name');
     if(_userLoggedIn==null || _userLoggedIn == false){
        _navigatePage();
     }else{
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const HomeScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> HomeScreen(user: name.toString(),)));
     }
   }
 }

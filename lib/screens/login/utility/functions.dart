@@ -19,8 +19,11 @@ void login({required BuildContext context, required String email, required Strin
     var response = await http.post(loginURL, body: data);
     if (response.statusCode == 200) {
      var jsonData = json.decode(response.body.toString());
+     var userName = jsonData['data']['name'].toString();
      await sharedPreferences.setString('token', jsonData['data']['token']);
-     Navigator.of(context).pushReplacementNamed(AppRouter.home);
+     print(userName);
+     await sharedPreferences.setString('name', userName);
+     Navigator.of(context).pushReplacementNamed(AppRouter.home, arguments: {'userName': userName});
       // Navigator.of(context).pushAndRemoveUntil(
       //     MaterialPageRoute(
       //         builder: (BuildContext context) => const HomeScreen()),
