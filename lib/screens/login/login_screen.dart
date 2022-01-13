@@ -16,7 +16,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool hidePassword = true;
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -73,9 +72,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Wrap(
                                 spacing: 1,
                                 children: [
-                                  emailTextField(emailController),
+                                  emailTextField(
+                                      emailController: emailController),
                                   smallGap,
-                                  passwordTextField(passwordController),
+                                  passwordTextField(
+                                      passwordController: passwordController),
                                 ],
                               ),
                             ),
@@ -93,23 +94,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           smallGap,
                           SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                if (_formKey.currentState!.validate()) {
-                                  login(context, emailController.text,
-                                      passwordController.text);
-                                }
-                              },
-                              child: const Text(
-                                "Login",
-                                style: buttonText,
-                              ),
-                            ),
-                          ),
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    login(
+                                        context: context,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        loading: _isLoading);
+
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  "Login",
+                                  style: buttonText,
+                                ),
+                              )),
                           const SizedBox(
                             height: 20,
                           ),
@@ -148,7 +152,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Password Text Field
 
-  TextFormField passwordTextField(TextEditingController passwordController) {
+  TextFormField passwordTextField(
+      {required TextEditingController passwordController}) {
     return TextFormField(
       validator: validatePassword,
       style: contentStyle,
@@ -156,6 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
       keyboardType: TextInputType.text,
       obscureText: hidePassword,
       decoration: InputDecoration(
+        focusedBorder: textBorderDecoration,
+        enabledBorder: textBorderDecoration,
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
             onPressed: () {

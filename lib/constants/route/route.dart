@@ -8,13 +8,13 @@ import 'package:tb_share_notes/screens/signup/signup_screen.dart';
 import 'package:tb_share_notes/screens/splash_screen/splash_screen.dart';
 
 class AppRouter {
-  static const String home = '/';
+  static const String home = '/home';
   static const String login = '/login';
   static const String signup = '/signup';
   static const String addNote = '/addNote';
   static const String editNote = '/editNote';
   static const String viewNote = '/viewNote';
-  static const String splash = '/splash';
+  static const String splash = '/';
   // static const String addNote ='/addNote';
 
   const AppRouter._();
@@ -39,9 +39,13 @@ class AppRouter {
         );
       case addNote:
         return MaterialPageRoute(
-          builder: (_) => const AddNotesScreen(),
+          builder: (_) =>  const AddNotesScreen(),
         );
-      case viewNote:
+      //   case editNote:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const EditNotesScreen(),
+      //   );
+      // case viewNote:
       // return MaterialPageRoute(
       //   builder: (_) => const ViewNotesScreen(title: '',),
       // );

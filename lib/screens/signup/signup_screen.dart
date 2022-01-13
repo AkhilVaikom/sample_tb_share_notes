@@ -28,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -75,28 +76,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: Wrap(
                                   spacing: 1,
                                   children: [
-                                    userNameTextField(userNameController),
+                                    userNameTextField(
+                                        controller: userNameController),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    emailTextField(emailController),
+                                    emailTextField(
+                                        emailController: emailController),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     //passwordField(),
                                     passwordTextField(
-                                        obscureText.password,
-                                        passwordController,
-                                        hidePassword,
-                                        "Password"),
+                                        visibilePasswordText:
+                                            obscureText.password,
+                                        controller: passwordController,
+                                        obText: hidePassword,
+                                        textName: "Password"),
                                     const SizedBox(
                                       height: 10,
                                     ),
                                     passwordTextField(
-                                        obscureText.confirmPassword,
-                                        confirmPasswordController,
-                                        hideConfirmPassword,
-                                        "Confirm Password"),
+                                        visibilePasswordText:
+                                            obscureText.confirmPassword,
+                                        controller: confirmPasswordController,
+                                        obText: hideConfirmPassword,
+                                        textName: "Confirm Password"),
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -163,8 +168,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   //Pasword Text Field
-  TextFormField passwordTextField(Enum visibilePasswordText,
-      TextEditingController controller, bool obText, String textName) {
+  TextFormField passwordTextField(
+      {required Enum visibilePasswordText,
+      required TextEditingController controller,
+      required bool obText,
+      required String textName}) {
     return TextFormField(
       validator: validatePassword,
       style: contentStyle,
@@ -172,6 +180,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       keyboardType: TextInputType.text,
       obscureText: obText,
       decoration: InputDecoration(
+        focusedBorder: textBorderDecoration,
+        enabledBorder: textBorderDecoration,
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
             onPressed: () {
