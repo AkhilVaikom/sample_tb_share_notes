@@ -11,21 +11,23 @@ import 'package:tb_share_notes/utility/validator.dart';
 
 void checkSignUp(BuildContext ctx, String _userName, String _eMail,
     String _password, String _confirmPassord) async {
-  Map data = {'name':_userName,'email': _eMail, 'password': _password,'confirm_password':_confirmPassord};
+  Map data = {
+    'name': _userName,
+    'email': _eMail,
+    'password': _password,
+    'confirm_password': _confirmPassord
+  };
   String _msg;
   final sharedPreferences = await SharedPreferences.getInstance();
   if (_password == _confirmPassord) {
-    var jsonData;
+    //var jsonData;
     var response = await http.post(signupURL, body: data);
-    
-    print(response.statusCode);
     if (response.statusCode == 200) {
-      jsonData = json.decode(response.body);
-      _msg=jsonData['message'].toString();
-      print(_msg);
+     var jsonData = json.decode(response.body);
+      _msg = jsonData['message'].toString();
       await sharedPreferences.setString('token', jsonData['data']['token']);
-       ScaffoldMessenger.of(ctx).showSnackBar(
-         SnackBar(
+      ScaffoldMessenger.of(ctx).showSnackBar(
+        SnackBar(
           content: Text(_msg),
           behavior: SnackBarBehavior.fixed,
         ),
@@ -60,12 +62,14 @@ void checkSignUp(BuildContext ctx, String _userName, String _eMail,
 
 // username text field
 
-TextFormField userNameTextField(TextEditingController controller) {
+TextFormField userNameTextField({required TextEditingController controller}) {
   return TextFormField(
     validator: validateUserName,
     controller: controller,
     keyboardType: TextInputType.text,
     decoration: const InputDecoration(
+      focusedBorder: textBorderDecoration,
+      enabledBorder: textBorderDecoration,
       border: OutlineInputBorder(),
       prefixIcon: Icon(Icons.person),
       hintText: "Username",
@@ -74,7 +78,7 @@ TextFormField userNameTextField(TextEditingController controller) {
 }
 
 // email text field
-TextFormField emailTextField(TextEditingController emailController) {
+TextFormField emailTextField({required TextEditingController emailController}) {
   return TextFormField(
     autocorrect: true,
     validator: validateEmailAddress,
@@ -82,6 +86,8 @@ TextFormField emailTextField(TextEditingController emailController) {
     controller: emailController,
     keyboardType: TextInputType.emailAddress,
     decoration: const InputDecoration(
+      focusedBorder: textBorderDecoration,
+      enabledBorder: textBorderDecoration,
       border: OutlineInputBorder(),
       prefixIcon: Icon(Icons.email),
       hintText: "Email",

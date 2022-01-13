@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tb_share_notes/constants/route/route.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
-import 'package:tb_share_notes/screens/login/login_screen.dart';
 import 'package:tb_share_notes/screens/sharenotes/view_notes/view_share_notes.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
  logout(BuildContext context)async {
    final sharedPref= await SharedPreferences.getInstance();
    await sharedPref.clear();
-   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>const LoginScreen()), (route) => false);
+   Navigator.of(context).pushNamedAndRemoveUntil(AppRouter.login, (route) => false);
+   //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>const LoginScreen()), (route) => false);
  }
 
  

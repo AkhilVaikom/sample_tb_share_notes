@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tb_share_notes/constants/my_material_color.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/screens/sharenotes/edit_notes/edit_share_notes.dart';
 
 class ViewNotesScreen extends StatelessWidget {
   final String title;
@@ -25,13 +27,13 @@ class ViewNotesScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
              Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
                 title,
-                style: subHeadStyle,
+                style: const TextStyle(fontSize: 24,color: myTeal),
               ),
             ),
             
@@ -39,7 +41,7 @@ class ViewNotesScreen extends StatelessWidget {
             Card(
               margin: const EdgeInsets.all(20),
               child: SizedBox(
-                height: _size.height * .5,
+                height: _size.height * .62,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: SingleChildScrollView(
@@ -62,7 +64,10 @@ class ViewNotesScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: ()=>Navigator.of(context).push( MaterialPageRoute(
+              builder: (context) =>  EditNotesScreen(titleText: title,),
+            ),),
+       // onPressed: () =>Navigator.of(context).pushNamed(AppRouter.editNote),
         child: const Icon(Icons.edit),
       ),
     );
