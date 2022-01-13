@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tb_share_notes/constants/my_material_color.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/screens/sharenotes/edit_notes/edit_share_notes.dart';
 
 class ViewNotesScreen extends StatelessWidget {
   final String title;
@@ -10,62 +12,36 @@ class ViewNotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController titleController=TextEditingController(text: title);
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: const Text("View Notes"),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Text(
-                "Title",
-                style: subHeadStyle,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    color: Colors.white,
-                    child: TextFormField(
-                      controller: titleController,
-                      style: contentStyle,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(
-              height: 10,
+              height: 50,
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+             Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Descrption",
-                style: subHeadStyle,
+                title,
+                style: const TextStyle(fontSize: 24,color: myTeal),
               ),
             ),
+            
+            
             Card(
               margin: const EdgeInsets.all(20),
               child: SizedBox(
-                height: _size.height * .5,
+                height: _size.height * .62,
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: SingleChildScrollView(
@@ -86,6 +62,13 @@ class ViewNotesScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ()=>Navigator.of(context).push( MaterialPageRoute(
+              builder: (context) =>  EditNotesScreen(titleText: title,),
+            ),),
+       // onPressed: () =>Navigator.of(context).pushNamed(AppRouter.editNote),
+        child: const Icon(Icons.edit),
       ),
     );
   }

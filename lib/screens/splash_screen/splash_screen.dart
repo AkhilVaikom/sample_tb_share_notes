@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/screens/home/home_screen.dart';
 import 'package:tb_share_notes/screens/login/login_screen.dart';
@@ -15,9 +16,10 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    checkUserLoggedIn();
     //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,overlays: []);
     super.initState();
-    _navigatePage();
+   
   }
 
   _navigatePage() async {
@@ -40,5 +42,15 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> checkUserLoggedIn() async{
+    final _sharedPreferences = await SharedPreferences.getInstance();
+    final _userLoggedIn= _sharedPreferences.getString('token');
+    if(_userLoggedIn==null || _userLoggedIn == false){
+       _navigatePage();
+    }else{
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>const HomeScreen()));
+    }
   }
 }

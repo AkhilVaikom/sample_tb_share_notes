@@ -2,18 +2,36 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/screens/signup/utility/functions.dart';
+import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 import 'package:tb_share_notes/screens/login/login_screen.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool hidePassword = true;
+  bool hideConfirmPassword = true;
+  // String? _userName, _password, _eMail, _confirmPassord;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: SizedBox(
               height: size.height,
               width: size.width,
@@ -58,60 +76,32 @@ class SignUpScreen extends StatelessWidget {
                                 child: Wrap(
                                   spacing: 1,
                                   children: [
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.person),
-                                        hintText: "Username",
-                                      ),
-                                    ),
+                                    userNameTextField(
+                                        controller: userNameController),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        prefixIcon: Icon(Icons.email),
-                                        hintText: "Email",
-                                      ),
-                                    ),
+                                    emailTextField(
+                                        emailController: emailController),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      obscureText: true,
-                                      decoration: InputDecoration(
-                                          border: const OutlineInputBorder(),
-                                          prefixIcon: IconButton(
-                                            onPressed: () {
-                                                  
-                                            },
-                                            icon: const Icon(Icons.lock_outlined),
-                                          ),
-                                          hintText: "Pssword",
-                                          suffixIcon: const Icon(
-                                            Icons.visibility,
-                                            color: Colors.indigoAccent,
-                                          )),
-                                    ),
+                                    //passwordField(),
+                                    passwordTextField(
+                                        visibilePasswordText:
+                                            obscureText.password,
+                                        controller: passwordController,
+                                        obText: hidePassword,
+                                        textName: "Password"),
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.text,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          prefixIcon: Icon(Icons.lock_outlined),
-                                          hintText: "Confirm Password",
-                                          suffixIcon: Icon(
-                                            Icons.visibility,
-                                            color: Colors.indigoAccent,
-                                          )),
-                                    ),
+                                    passwordTextField(
+                                        visibilePasswordText:
+                                            obscureText.confirmPassword,
+                                        controller: confirmPasswordController,
+                                        obText: hideConfirmPassword,
+                                        textName: "Confirm Password"),
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -119,11 +109,19 @@ class SignUpScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            
                             SizedBox(
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    checkSignUp(
+                                        context,
+                                        userNameController.text,
+                                        emailController.text,
+                                        passwordController.text,
+                                        confirmPasswordController.text);
+                                  }
+                                },
                                 child: const Text(
                                   "Sign Up",
                                   style: buttonText,
@@ -165,6 +163,38 @@ class SignUpScreen extends StatelessWidget {
                 ],
               )),
         ),
+      ),
+    );
+  }
+
+  //Pasword Text Field
+  TextFormField passwordTextField(
+      {required Enum visibilePasswordText,
+      required TextEditingController controller,
+      required bool obText,
+      required String textName}) {
+    return TextFormField(
+      validator: validatePassword,
+      style: contentStyle,
+      controller: controller,
+      keyboardType: TextInputType.text,
+      obscureText: obText,
+      decoration: InputDecoration(
+        focusedBorder: textBorderDecoration,
+        enabledBorder: textBorderDecoration,
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                obText = !obText;
+                visibilePasswordText == obscureText.password
+                    ? hidePassword = obText
+                    : hideConfirmPassword = obText;
+              });
+            },
+            icon: Icon(obText ? passwordVisibilityOff : passwordVisibility)),
+        hintText: textName,
+        prefixIcon: const Icon(Icons.lock_outlined),
       ),
     );
   }

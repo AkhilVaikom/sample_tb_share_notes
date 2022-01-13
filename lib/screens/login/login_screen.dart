@@ -2,19 +2,32 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:tb_share_notes/constants/string_constants.dart';
 import 'package:tb_share_notes/constants/style_constants.dart';
-import 'package:tb_share_notes/screens/home/home_screen.dart';
-import 'package:tb_share_notes/screens/signup/signup_screen.dart';
+import 'package:tb_share_notes/screens/login/utility/functions.dart';
+import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _isLoading = false;
+  bool hidePassword = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var smallGap = const SizedBox(height: 20);
+
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
           child: SizedBox(
             height: size.height,
             width: size.width,
@@ -59,34 +72,11 @@ class LoginScreen extends StatelessWidget {
                               child: Wrap(
                                 spacing: 1,
                                 children: [
-                                  
-                                  TextFormField(
-                                    keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      prefixIcon: Icon(Icons.email),
-                                      hintText: "Email",
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  TextFormField(
-                                    keyboardType: TextInputType.text,
-                                    obscureText: true,
-                                    decoration: InputDecoration(
-                                        border: const OutlineInputBorder(),
-                                        prefixIcon: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(Icons.lock_outlined),
-                                        ),
-                                        hintText: "Pssword",
-                                        suffixIcon: const Icon(
-                                          Icons.visibility,
-                                          color: Colors.indigoAccent,
-                                        )),
-                                  ),
-                                  
+                                  emailTextField(
+                                      emailController: emailController),
+                                  smallGap,
+                                  passwordTextField(
+                                      passwordController: passwordController),
                                 ],
                               ),
                             ),
@@ -102,24 +92,28 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10,),
+                          smallGap,
                           SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                 Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const HomeScreen()),
-                                            );
-                              },
-                              child: const Text(
-                                "Login",
-                                style: buttonText,
-                              ),
-                            ),
-                          ),
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    login(
+                                        context: context,
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                        loading: _isLoading);
+
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  "Login",
+                                  style: buttonText,
+                                ),
+                              )),
                           const SizedBox(
                             height: 20,
                           ),
@@ -137,12 +131,8 @@ class LoginScreen extends StatelessWidget {
                                             fontSize: 18),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const SignUpScreen()),
-                                            );
+                                            Navigator.pushNamed(
+                                                context, '/signup');
                                           })
                                   ]),
                             ),
@@ -156,6 +146,34 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // Password Text Field
+
+  TextFormField passwordTextField(
+      {required TextEditingController passwordController}) {
+    return TextFormField(
+      validator: validatePassword,
+      style: contentStyle,
+      controller: passwordController,
+      keyboardType: TextInputType.text,
+      obscureText: hidePassword,
+      decoration: InputDecoration(
+        focusedBorder: textBorderDecoration,
+        enabledBorder: textBorderDecoration,
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+            onPressed: () {
+              setState(() {
+                hidePassword = !hidePassword;
+              });
+            },
+            icon: Icon(
+                hidePassword ? passwordVisibilityOff : passwordVisibility)),
+        hintText: "Pssword",
+        prefixIcon: const Icon(Icons.lock_outlined),
       ),
     );
   }
