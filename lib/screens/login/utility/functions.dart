@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:tb_share_notes/constants/route/route.dart';
-import 'package:tb_share_notes/constants/string_constants.dart';
-import 'package:tb_share_notes/constants/style_constants.dart';
-import 'package:tb_share_notes/utility/validator.dart';
-
+import 'package:tb_share_notes/constants/utility/validator.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 
 
 
@@ -45,7 +43,7 @@ void login({required BuildContext context, required String email, required Strin
     return TextFormField(
       autocorrect: true,
       validator: validateEmailAddress,
-      style: contentStyle,
+      style: CommonTextStyle.contentStyle,
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
       decoration:  const InputDecoration(

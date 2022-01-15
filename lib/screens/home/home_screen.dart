@@ -1,37 +1,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:tb_share_notes/constants/route/route.dart';
-import 'package:tb_share_notes/constants/string_constants.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 import 'package:tb_share_notes/screens/home/utility/drawer_menu.dart';
-import 'package:tb_share_notes/screens/sharenotes/view_notes/view_share_notes.dart';
+import 'package:tb_share_notes/screens/view_notes/view_share_notes.dart';
 
-class HomeScreen extends StatefulWidget {
-  final String user;
+class HomeScreen extends StatelessWidget {
   const HomeScreen({
     Key? key,
-    required this.user,
   }) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-@override
-  void initState() {
-    super.initState();
-  }
-
-   
-  @override
   Widget build(BuildContext context) {
-    // final args = ModalRoute.of(context)!.settings.arguments as Map;
-    // String user= args['userName'];
-    // print(widget.user);
     return Scaffold(
-      drawer:  Drawer(child: DrawerWidget(name: widget.user,),),
+      drawer: const Drawer(child: DrawerWidget(),),
       appBar: AppBar(title: Text(appName),centerTitle: true,actions: [IconButton(onPressed: (){
       logout(context);
       }, icon: const Icon(Icons.power_settings_new))],),

@@ -1,9 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tb_share_notes/constants/string_constants.dart';
-import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/constants/utility/validator.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 import 'package:tb_share_notes/screens/login/utility/functions.dart';
-import 'package:tb_share_notes/utility/validator.dart';
 import 'package:tb_share_notes/widgets/app_bar_container.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,13 +13,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isLoading = false;
-  bool hidePassword = true;
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    bool _isLoading = false;
+    bool hidePassword = true;
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
     Size size = MediaQuery.of(context).size;
     var smallGap = const SizedBox(height: 20);
 
@@ -36,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 AppBarContainer(
                   height: size.height,
                   width: size.width,
-                  image: appBarImage,
+                  image: ImageName.appBarImage,
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -61,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const Center(
                             child: Text(
                               "Login",
-                              style: headStyle,
+                              style: CommonTextStyle.headStyle,
                             ),
                           ),
                           const SizedBox(
@@ -76,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       emailController: emailController),
                                   smallGap,
                                   passwordTextField(
-                                      passwordController: passwordController),
+                                      passwordController: passwordController, hidePassword: true),
                                 ],
                               ),
                             ),
@@ -111,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: const Text(
                                   "Login",
-                                  style: buttonText,
+                                  style: CommonTextStyle.buttonText,
                                 ),
                               )),
                           const SizedBox(
@@ -153,10 +152,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // Password Text Field
 
   TextFormField passwordTextField(
-      {required TextEditingController passwordController}) {
+      {required TextEditingController passwordController,required bool hidePassword}) {
     return TextFormField(
       validator: validatePassword,
-      style: contentStyle,
+      style: CommonTextStyle.contentStyle,
       controller: passwordController,
       keyboardType: TextInputType.text,
       obscureText: hidePassword,
@@ -166,9 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
             onPressed: () {
-              setState(() {
-                hidePassword = !hidePassword;
-              });
+             
             },
             icon: Icon(
                 hidePassword ? passwordVisibilityOff : passwordVisibility)),

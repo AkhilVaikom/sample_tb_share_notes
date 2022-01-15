@@ -1,20 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:tb_share_notes/constants/string_constants.dart';
-import 'package:tb_share_notes/constants/style_constants.dart';
-import 'package:tb_share_notes/screens/signup/utility/functions.dart';
-import 'package:tb_share_notes/utility/validator.dart';
-import 'package:tb_share_notes/widgets/app_bar_container.dart';
+import 'package:tb_share_notes/constants/utility/validator.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 import 'package:tb_share_notes/screens/login/login_screen.dart';
+import 'package:tb_share_notes/screens/signup/utility/functions.dart';
+import 'package:tb_share_notes/widgets/app_bar_container.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
-  @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
-}
 
-class _SignUpScreenState extends State<SignUpScreen> {
+  @override
+  Widget build(BuildContext context) {
+    
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -22,10 +20,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   bool hidePassword = true;
   bool hideConfirmPassword = true;
-  // String? _userName, _password, _eMail, _confirmPassord;
-
-  @override
-  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
      // resizeToAvoidBottomInset: false,
@@ -40,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   AppBarContainer(
                     height: size.height,
                     width: size.width,
-                    image: appBarImage,
+                    image: ImageName.appBarImage,
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -65,7 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             const Center(
                               child: Text(
                                 "Sign Up",
-                                style: headStyle,
+                                style: CommonTextStyle.headStyle,
                               ),
                             ),
                             const SizedBox(
@@ -124,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 },
                                 child: const Text(
                                   "Sign Up",
-                                  style: buttonText,
+                                  style: CommonTextStyle.buttonText,
                                 ),
                               ),
                             ),
@@ -175,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       required String textName}) {
     return TextFormField(
       validator: validatePassword,
-      style: contentStyle,
+      style: CommonTextStyle.contentStyle,
       controller: controller,
       keyboardType: TextInputType.text,
       obscureText: obText,
@@ -185,12 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
             onPressed: () {
-              setState(() {
-                obText = !obText;
-                visibilePasswordText == obscureText.password
-                    ? hidePassword = obText
-                    : hideConfirmPassword = obText;
-              });
+             
             },
             icon: Icon(obText ? passwordVisibilityOff : passwordVisibility)),
         hintText: textName,

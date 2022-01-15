@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:tb_share_notes/constants/style_constants.dart';
-
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 class AppBarContainer extends StatelessWidget {
   const AppBarContainer({
     Key? key,

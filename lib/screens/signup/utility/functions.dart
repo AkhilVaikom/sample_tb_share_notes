@@ -4,10 +4,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tb_share_notes/constants/string_constants.dart';
-import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/constants/utility/validator.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 import 'package:tb_share_notes/screens/home/home_screen.dart';
-import 'package:tb_share_notes/utility/validator.dart';
 
 void checkSignUp(BuildContext ctx, String _userName, String _eMail,
     String _password, String _confirmPassord) async {
@@ -34,7 +33,7 @@ void checkSignUp(BuildContext ctx, String _userName, String _eMail,
       );
       Navigator.of(ctx).pushAndRemoveUntil(
           MaterialPageRoute(
-              builder: (BuildContext context) =>  HomeScreen(user: _userName,)),
+              builder: (BuildContext context) =>  const HomeScreen()),
           (Route<dynamic> route) => false);
     } else {
       ScaffoldMessenger.of(ctx).showSnackBar(
@@ -82,7 +81,7 @@ TextFormField emailTextField({required TextEditingController emailController}) {
   return TextFormField(
     autocorrect: true,
     validator: validateEmailAddress,
-    style: contentStyle,
+    style: CommonTextStyle.contentStyle,
     controller: emailController,
     keyboardType: TextInputType.emailAddress,
     decoration: const InputDecoration(

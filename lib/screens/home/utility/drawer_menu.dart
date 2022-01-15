@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
- final String name;
   const DrawerWidget({
     Key? key,
-    required this.name,
   }) : super(key: key);
 
   @override
@@ -15,21 +13,21 @@ class DrawerWidget extends StatelessWidget {
           child: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children:  [
-              const CircleAvatar(
+              children: const [
+                CircleAvatar(
                   radius: 30,
-                  backgroundImage:  NetworkImage('https://mpng.subpng.com/20180326/wzw/kisspng-computer-icons-user-profile-avatar-female-profile-5ab915f791e2c1.8067312315220792235976.jpg'),
+                  backgroundImage: NetworkImage(
+                      'https://mpng.subpng.com/20180326/wzw/kisspng-computer-icons-user-profile-avatar-female-profile-5ab915f791e2c1.8067312315220792235976.jpg'),
                 ),
-               const SizedBox(
+                SizedBox(
                   width: 20,
                 ),
-                Text(
-                  name,
+                Text("Akhil",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 26,
                     color: Colors.orange,
-                    fontFamily: "Lobster",
+                    fontFamily: "Tangerine",
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -41,10 +39,10 @@ class DrawerWidget extends StatelessWidget {
           ),
         ),
         const ListTile(
-      title: Text("Log Out"),
-      trailing: Icon(Icons.power_settings_new),
-    ),
-        
+          title: Text("Log Out"),
+          trailing: Icon(Icons.power_settings_new),
+        ),
+
         // DrawerMenu(
         //   titleText: "Settle App Menu 6",
         //   subTitleText: "Click to open Menu 6",

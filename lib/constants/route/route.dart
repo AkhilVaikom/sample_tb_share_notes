@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tb_share_notes/constants/route/route_exception.dart';
+import 'package:tb_share_notes/screens/add_notes/add_share_notes.dart';
+import 'package:tb_share_notes/screens/edit_notes/edit_share_notes.dart';
 import 'package:tb_share_notes/screens/home/home_screen.dart';
-import 'package:tb_share_notes/screens/login/login_screen.dart';
-import 'package:tb_share_notes/screens/sharenotes/add_notes/add_share_notes.dart';
-//import 'package:tb_share_notes/screens/sharenotes/view_notes/view_share_notes.dart';
 import 'package:tb_share_notes/screens/signup/signup_screen.dart';
-import 'package:tb_share_notes/screens/splash_screen/splash_screen.dart';
+import 'package:tb_share_notes/screens/splash/splash_screen.dart';
+import 'package:tb_share_notes/screens/view_notes/view_share_notes.dart';
 
 class AppRouter {
   static const String home = '/home';
@@ -26,15 +26,13 @@ class AppRouter {
     
     switch (settings.name) {
       case home:
-        final args = settings.arguments as Map;
-        String username= args['userName'].toString();
         return MaterialPageRoute(
-          builder: (_) =>  HomeScreen(user: username),
+          builder: (_) =>  const HomeScreen(),
         );
-      case login:
-        return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-        );
+      // case login:
+      //   return MaterialPageRoute(
+      //     builder: (_) => const LoginScreen(),
+      //   );
       case splash:
         return MaterialPageRoute(
           builder: (_) => const SplashScreen(),
@@ -47,14 +45,14 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) =>  const AddNotesScreen(),
         );
-      //   case editNote:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const EditNotesScreen(),
-      //   );
-      // case viewNote:
-      // return MaterialPageRoute(
-      //   builder: (_) => const ViewNotesScreen(title: '',),
-      // );
+        case editNote:
+        return MaterialPageRoute(
+          builder: (_) => const EditNotesScreen(titleText: "Update Note",),
+        );
+      case viewNote:
+      return MaterialPageRoute(
+        builder: (_) => const ViewNotesScreen(title: 'View Note',),
+      );
       default:
         throw const RouteException('Route not found!');
     }

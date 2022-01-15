@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tb_share_notes/constants/my_material_color.dart';
-import 'package:tb_share_notes/constants/style_constants.dart';
-import 'package:tb_share_notes/screens/sharenotes/edit_notes/edit_share_notes.dart';
-
+import 'package:tb_share_notes/constants/color/my_material_color.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
+import 'package:tb_share_notes/screens/edit_notes/edit_share_notes.dart';
 class ViewNotesScreen extends StatelessWidget {
   final String title;
   const ViewNotesScreen({
@@ -49,7 +48,7 @@ class ViewNotesScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         TextField(
-                          style: contentStyle,
+                          style: CommonTextStyle.contentStyle,
                           decoration: InputDecoration(border: InputBorder.none),
                           maxLines: null,
                           keyboardType: TextInputType.multiline,

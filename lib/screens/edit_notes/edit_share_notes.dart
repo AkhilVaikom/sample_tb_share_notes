@@ -1,41 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 
-import 'package:tb_share_notes/constants/style_constants.dart';
-
-class EditNotesScreen extends StatefulWidget {
+class EditNotesScreen extends StatelessWidget {
   final String titleText;
   const EditNotesScreen({
     Key? key,
     required this.titleText,
   }) : super(key: key);
 
-  @override
-  State<EditNotesScreen> createState() => _EditNotesScreenState();
-}
-
-class _EditNotesScreenState extends State<EditNotesScreen> {
-  late FocusNode myFocusNode;
-
-  bool descTextFocus = false;
-
-  @override
-  void initState() {
-    myFocusNode = FocusNode();
-    myFocusNode.requestFocus();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    myFocusNode.dispose();
-    super.dispose();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
+    // initState
+    FocusNode myFocusNode = FocusNode();
+    myFocusNode.requestFocus();
+    // initState
+     bool descTextFocus = false;
     Size _size = MediaQuery.of(context).size;
     final TextEditingController titleController =
-        TextEditingController(text: widget.titleText);
+        TextEditingController(text: titleText);
     titleController.selection = TextSelection.fromPosition(
         TextPosition(offset: titleController.text.length));
     return Scaffold(
@@ -63,7 +46,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
                     color: Colors.white,
                     child: TextFormField(
                       controller: titleController,
-                      style: contentStyle,
+                      style: CommonTextStyle.contentStyle,
                       decoration: const InputDecoration(
                         hintText: "Title:",
                         border: OutlineInputBorder(),
@@ -79,9 +62,6 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
             ),
             GestureDetector(
               onTap: () {
-                setState(() {
-                  myFocusNode.requestFocus();
-                });
               },
               child: Card(
                 elevation: 1,
@@ -102,7 +82,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
                           TextField(
                             focusNode: myFocusNode,
                             autofocus: descTextFocus,
-                            style: contentStyle,
+                            style: CommonTextStyle.contentStyle,
                             decoration:
                                 const InputDecoration(border: InputBorder.none),
                             maxLines: null,
@@ -129,7 +109,7 @@ class _EditNotesScreenState extends State<EditNotesScreen> {
                     onPressed: () {},
                     child: const Text(
                       "Update",
-                      style: buttonText,
+                      style: CommonTextStyle.buttonText,
                     )))
           ],
         ),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:tb_share_notes/constants/style_constants.dart';
+import 'package:tb_share_notes/constants/variables/string_constants.dart';
 
 //textField widgets
 Widget commonTextField({required TextEditingController controller}) {
   return TextFormField(
     controller: controller,
-    style: contentStyle,
+    style: CommonTextStyle.contentStyle,
     decoration: const InputDecoration(
       focusedBorder: textBorderDecoration,
       enabledBorder: textBorderDecoration,
@@ -40,7 +40,7 @@ Widget commonCardWidgets(
               TextField(
                 focusNode: myFocusNode,
                 autofocus: descTextFocus,
-                style: contentStyle,
+                style: CommonTextStyle.contentStyle,
                 decoration: const InputDecoration(border: InputBorder.none),
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
